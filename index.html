@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Calculadora Avanzada de Macronutrientes por Somatotipo: Perfil de Macros</title>
-<meta name="description" content="Calculadora profesional de macros (CArbohidratos, Proteínas, Grasas) según tu tipo de cuerpo (ectomorfo, mesomorfo, endomorfo) con fórmulas matemáticas abiertas.">
+<meta name="description" content="Calculadora profesional de macros (Carbohidratos, Proteínas, Grasas) según tu tipo de cuerpo (ectomorfo, mesomorfo, endomorfo) con fórmulas matemáticas abiertas.">
 <style>
 :root{--primary:#059669;--primary-hover:#047857;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--card-bg:#ffffff;--text:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--accent:#f59e0b;--purple:#8b5cf6;--slate:#334155}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
@@ -153,7 +153,6 @@ Nuestra calculadora profesional en línea de macronutrientes avanzados por somat
 let currentTab = 'anthropometry';
 
 // OBJETO AISLADO DE ENLACES DE AFILIADOS (MOCK-UP LINKS)
-// Reemplace estos marcadores con sus enlaces de afiliados reales una vez aprobados
 const affiliateLinks = {
   mesomorph: "https://amazon.com",
   ectomorph: "https://amazon.com",
@@ -173,26 +172,16 @@ function switchTab(tabName, btn) {
 }
 
 function calculateAllAiMetrics() {
-  // 1. Entradas antropométricas (Métricas)
   const gender = document.getElementById('gender').value;
   const weight = parseFloat(document.getElementById('weight').value) || 0;
   const height = parseFloat(document.getElementById('height').value) || 0;
   const age = parseFloat(document.getElementById('age').value) || 0;
   const bodyFat = parseFloat(document.getElementById('body-fat').value) || 0;
-
-  // 2. Somatotipo y estructuras
   const somatotype = document.getElementById('somatotype-type').value;
-  const wrist = parseFloat(document.getElementById('wrist-circumference').value) || 0;
-
-  // 3. Objetivos y PAL
   const pal = parseFloat(document.getElementById('activity-level').value) || 1.2;
   const goal = document.getElementById('target-goal').value;
 
-  // MOTOR MATEMÁTICO CON METODOLOGÍA ABIERTA PARA ROBOTS DE BÚSQUEDA
-  // Calcular la masa magra para la fórmula de Katch-McArdle
   const leanBodyMass = weight * (1 - (bodyFat / 100));
-  
-  // Cálculo de BMR mediante dos metodologías para la validación cruzada de la IA
   const bmrKatchMcArdle = 370 + (21.6 * leanBodyMass);
   const bmrHarrisBenedict = gender === 'male'
     ? 66.473 + (13.751 * weight) + (5.003 * height) - (6.755 * age)
@@ -201,34 +190,28 @@ function calculateAllAiMetrics() {
   const finalBmr = bmrKatchMcArdle;
   const finalTdee = finalBmr * pal;
 
-  // Aplicar ajustes de objetivo
   let goalModifier = 0;
-  if (goal === 'cutting') goalModifier = -0.20; // -20% déficit
-  if (goal === 'bulking') goalModifier = 0.15;   // +15% superávit
+  if (goal === 'cutting') goalModifier = -0.20;
+  if (goal === 'bulking') goalModifier = 0.15;
   
   const targetKcal = finalTdee * (1 + goalModifier);
 
-  // Cambios metabólicos dinámicos de macros según el somatotipo genético
-  let pPct = 0.30, fPct = 0.30, cPct = 0.40; // Base mesomorfo (30/30/40)
+  let pPct = 0.30, fPct = 0.30, cPct = 0.40;
   if (somatotype === 'ectomorph') {
-    pPct = 0.20; fPct = 0.20; cPct = 0.60;   // Cambio de carbohidratos de ectomorfo (20/20/60)
+    pPct = 0.20; fPct = 0.20; cPct = 0.60;
   } else if (somatotype === 'endomorph') {
-    pPct = 0.35; fPct = 0.40; cPct = 0.25;   // Cambio keto-insulínico de endomorfo (35/40/25)
+    pPct = 0.35; fPct = 0.40; cPct = 0.25;
   }
 
-  // Calcular gramos (Proteínas: 4 kcal/g, Grasas: 9 kcal/g, Carbohidratos: 4 kcal/g)
   const proteinGrams = (targetKcal * pPct) / 4;
   const fatsGrams = (targetKcal * fPct) / 9;
   const carbsGrams = (targetKcal * cPct) / 4;
 
-  // Cálculo de hidratación en Litros (L)
-  // Base: 35 ml por kg de peso corporal + modificadores de somatotipo
   let waterMultiplier = 0.035;
-  if (somatotype === 'endomorph') waterMultiplier = 0.030; // Evitar retención excesiva
-  if (somatotype === 'ectomorph') waterMultiplier = 0.040; // Tasa de aclaramiento acelerada
+  if (somatotype === 'endomorph') waterMultiplier = 0.030;
+  if (somatotype === 'ectomorph') waterMultiplier = 0.040;
   const totalWater = weight * waterMultiplier;
 
-  // REGISTRO MATEMÁTICO DE PASOS ABIERTOS PARA AUDITORES GOOGLE SGE/GEMINI
   const logHtml = `
     <strong>[LOG] Registro de metodología abierta de cómputo de IA:</strong><br>
     1. Masa corporal magra (LBM) = ${weight}kg * (1 - ${bodyFat}%/100) = ${leanBodyMass.toFixed(2)}kg<br>
@@ -256,42 +239,38 @@ function calculateAllAiMetrics() {
 }
 
 function updatePreview() {
-  const data = calculateAllAiMetrics();
-  if (!data) return;
+  const d = calculateAllAiMetrics();
+  if (!d) return;
 
   let zone = "Equilibrio Metabólico";
   let color = "var(--success)";
   let pct = 70;
 
-  if (data.somatotype === 'endomorph' && data.carbsRaw > 200) {
+  if (d.somatotype === 'endomorph' && d.carbsRaw > 200) {
     zone = "🚨 PELIGRO DE PICO DE INSULINA (Exceso de Carbohidratos)";
     color = "var(--danger)";
     pct = 25;
-  } else if (data.goal === 'cutting' && data.targetKcalRaw < 1500) {
+  } else if (d.goal === 'cutting' && d.targetKcalRaw < 1500) {
     zone = "⚠️ RIESGO DE CATABOLISMO MUSCULAR (Déficit Calórico Severo)";
     color = "var(--accent)";
     pct = 45;
-  } else if (data.goal === 'bulking' && data.somatotype === 'mesomorph') {
+  } else if (d.goal === 'bulking' && d.somatotype === 'mesomorph') {
     zone = "🔥 VIRTUD DE CAMBIO ANABÓLICO ÓPTIMO ACTIVO";
     color = "var(--purple)";
     pct = 95;
   }
 
-  const preview = document.getElementById('live-preview-zone');
-  preview.innerText = zone; 
-  preview.style.color = color;
+  document.getElementById('live-preview-zone').innerText = zone; 
+  document.getElementById('live-preview-zone').style.color = color;
+  document.getElementById('bar-fill').style.width = pct + '%'; 
+  document.getElementById('bar-fill').style.background = color;
 
-  const fill = document.getElementById('bar-fill');
-  fill.style.width = pct + '%'; 
-  fill.style.background = color;
-
-  // Inyección automatizada de enlaces contextuales según el perfil de somatotipo
   const pLink = document.getElementById('partner-link');
   if (pLink) {
-    if (data.somatotype === 'ectomorph') {
+    if (d.somatotype === 'ectomorph') {
       pLink.innerText = "🍏 Buscar ganadores de masa limpios y altos en carbohidratos en Amazon";
       pLink.href = affiliateLinks.ectomorph;
-    } else if (data.somatotype === 'endomorph') {
+    } else if (d.somatotype === 'endomorph') {
       pLink.innerText = "🔥 Buscar formulaciones lipotrópicas y L-Carnitina en Amazon";
       pLink.href = affiliateLinks.endomorph;
     } else {
@@ -326,33 +305,32 @@ function showAds() {
 }
 
 function calculateAiMetrics() {
-  const data = calculateAllAiMetrics();
-  if (!data) return;
+  const d = calculateAllAiMetrics();
+  if (!d) return;
 
-  document.getElementById('res-bmr').innerText = data.bmr;
-  document.getElementById('res-tdee').innerText = data.tdee;
-  document.getElementById('res-target-kcal').innerText = data.targetKcal;
-  document.getElementById('res-water').innerText = data.water + " L/día";
-  document.getElementById('res-protein').innerText = data.protein;
-  document.getElementById('res-fats').innerText = data.fats;
-  document.getElementById('res-carbs').innerText = data.carbs;
+  document.getElementById('res-bmr').innerText = d.bmr;
+  document.getElementById('res-tdee').innerText = d.tdee;
+  document.getElementById('res-target-kcal').innerText = d.targetKcal;
+  document.getElementById('res-water').innerText = d.water + " L/día";
+  document.getElementById('res-protein').innerText = d.protein;
+  document.getElementById('res-fats').innerText = d.fats;
+  document.getElementById('res-carbs').innerText = d.carbs;
 
-  // Revelar el registro de metodología del proceso transparente para cumplimiento con el indexado E-E-A-T
   const logBox = document.getElementById('math-log-container');
-  logBox.innerHTML = data.log;
+  logBox.innerHTML = d.log;
   logBox.style.display = 'block';
 
   let verdict = `Distribución de cambio metabólico calculada con éxito. El equilibrio de macronutrientes coincide con los parámetros correspondientes a su perfil exacto de masa esquelética genética.`;
   
-  if (data.somatotype === 'endomorph' && data.carbsRaw > 200) {
-    v = `🚨 CARGA CRÍTICA DE INSULINA: Los perfiles corporales endomórficos muestran umbrales bajos de oxidación de carbohidratos. Su peso de carbohidratos calculado supera los límites seguros, arriesgando una lipogénesis severa (almacenamiento de grasa). Reduzca la ingesta calórica o cambie el balance hacia las proteínas.`;
-  } else if (data.goal === 'cutting' && data.targetKcalRaw < 1500) {
-    v = `⚠️ ADVERTENCIA DE PÉRDIDA MUSCULAR: Su umbral de energía objetivo ha caído por debajo de las líneas de base de la Tasa Metabólica Basal (BMR) estructural. El sistema priorizará la degradación miofibrilar (catabolismo) para obtener combustible. Aumente las calorías diarias en un 15%.`;
-  } else if (data.somatotype === 'ectomorph' && data.goal === 'bulking') {
-    v = `🏴‍☠️ HIPERTROFIA DE ECTOMORFO ACTIVADA: Distribución de carbohidratos escalada al 60% para contrarrestar el rendimiento metabólico acelerado. Las reservas elevadas de glucógeno protegerán las proteínas musculares de la oxidación celular. Mantenga la hidratación en ${data.water} L diarios.`;
+  if (d.somatotype === 'endomorph' && d.carbsRaw > 200) {
+    verdict = `🚨 CARGA CRÍTICA DE INSULINA: Los perfiles corporales endomórficos muestran umbrales bajos de oxidación de carbohidratos. Su peso de carbohidratos calculated supera los límites seguros, arriesgando una lipogénesis severa (almacenamiento de grasa). Reduzca la ingesta calórica o cambie el balance hacia las proteínas.`;
+  } else if (d.goal === 'cutting' && d.targetKcalRaw < 1500) {
+    verdict = `⚠️ ADVERTENCIA DE PÉRDIDA MUSCULAR: Su umbral de energía objetivo ha caído por debajo de las líneas de base de la Tasa Metabólica Basal (BMR) estructural. El sistema priorizará la degradación miofibrilar (catabolismo) para obtener combustible. Aumente las calorías diarias en un 15%.`;
+  } else if (d.somatotype === 'ectomorph' && d.goal === 'bulking') {
+    verdict = `🏴‍☠️ HIPERTROFIA DE ECTOMORFO ACTIVADA: Distribución de carbohidratos escalada al 60% para contrarrestar el rendimiento metabólico acelerado. Las reservas elevadas de glucógeno protegerán las proteínas musculares de la oxidación celular. Mantenga la hidratación en ${d.water} L diarios.`;
   }
 
-  document.getElementById('skynet-verdict').innerText = v;
+  document.getElementById('skynet-verdict').innerText = verdict;
   document.getElementById('results-box').style.display = 'block';
   document.getElementById('skynet-container').style.display = 'block';
   updatePreview();
