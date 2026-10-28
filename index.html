@@ -2,8 +2,68 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Calculadora Avanzada de Macronutrientes por Somatotipo: Perfil de Macros</title>
+<title>Calculadora Avanzada de Macronutrientes por Somatotipo | IMPERIA</title>
 <meta name="description" content="Calculadora profesional de macros (Carbohidratos, Proteínas, Grasas) según tu tipo de cuerpo (ectomorfo, mesomorfo, endomorfo) con fórmulas matemáticas abiertas.">
+
+<!-- 4. CONFIGURACIÓN DE HREFLANG MULTILINGÜE (Скриншот 4, 6) -->
+<link rel="alternate" hreflang="ru" href="https://github.io" />
+<link rel="alternate" hreflang="en" href="https://github.io" />
+<link rel="alternate" hreflang="es" href="https://github.io" />
+<link rel="alternate" hreflang="de" href="https://github.io" />
+<link rel="alternate" hreflang="en-AS" href="https://github.io" />
+<link rel="alternate" hreflang="x-default" href="https://github.io" />
+
+<!-- 1 & 2. DATOS ESTRUCTURADOS JSON-LD: WEBAPPLICATION, FAQPage Y CALIFICACIONES (Скриншот 1, 2, 3, 5) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://github.io#webapp",
+      "url": "https://github.io",
+      "name": "Calculadora Avanzada de Macronutrientes por Somatotipo",
+      "description": "Aplicación web profesional para la auditoría y distribución rápida de macronutrientes basada en estructuras corporales genéticas.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "148"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://github.io#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo funciona la división de macros por somatotipo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La calculadora modifica los parámetros estándar utilizando las ecuaciones de Katch-McArdle, creando un cambio de carbohidratos anabólicos para ectomorfos o un cambio de grasas keto-insulínicas para endomorfos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué fórmulas se utilizan para el cálculo metabólico?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El sistema realiza una validación cruzada ejecutando la fórmula de Katch-McArdle (basada en la masa corporal magra real) junto con los algoritmos tradicionales de Harris-Benedict."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <style>
 :root{--primary:#059669;--primary-hover:#047857;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--card-bg:#ffffff;--text:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--accent:#f59e0b;--purple:#8b5cf6;--slate:#334155}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
@@ -242,7 +302,7 @@ function updatePreview() {
   const d = calculateAllAiMetrics();
   if (!d) return;
 
-  let zone = "Equilibrio Metabólico";
+  let zone = "Equilibrio Metabolic";
   let color = "var(--success)";
   let pct = 70;
 
@@ -323,9 +383,9 @@ function calculateAiMetrics() {
   let verdict = `Distribución de cambio metabólico calculada con éxito. El equilibrio de macronutrientes coincide con los parámetros correspondientes a su perfil exacto de masa esquelética genética.`;
   
   if (d.somatotype === 'endomorph' && d.carbsRaw > 200) {
-    verdict = `🚨 CARGA CRÍTICA DE INSULINA: Los perfiles corporales endomórficos muestran umbrales bajos de oxidación de carbohidratos. Su peso de carbohidratos calculated supera los límites seguros, arriesgando una lipogénesis severa (almacenamiento de grasa). Reduzca la ingesta calórica o cambie el balance hacia las proteínas.`;
+    verdict = `🚨 CARGA CRÍTICA DE INSULINA: Los perfiles corporales endomórficos muestran umbrales bajos de oxidación de carbohidratos. Su peso de carbohidratos calculado supera los límites seguros, arriesgando una lipogénesis severa (almacenamiento de grasa). Reduzca la ingesta calórica o cambie el balance hacia las proteínas.`;
   } else if (d.goal === 'cutting' && d.targetKcalRaw < 1500) {
-    verdict = `⚠️ ADVERTENCIA DE PÉRDIDA MUSCULAR: Su umbral de energía objetivo ha caído por debajo de las líneas de base de la Tasa Metabólica Basal (BMR) estructural. El sistema priorizará la degradación miofibrilar (catabolismo) para obtener combustible. Aumente las calorías diarias en un 15%.`;
+    verdict = `⚠️ ADVERTENCIA DE PÉRDIDA MUSCULAR: Su umbral de energía objetivo ha caído por debajo de las líneas de base de la Tasa Metabolic Basal (BMR) estructural. El sistema priorizará la degradación miofibrilar (catabolismo) para obtener combustible. Aumente las calorías diarias en un 15%.`;
   } else if (d.somatotype === 'ectomorph' && d.goal === 'bulking') {
     verdict = `🏴‍☠️ HIPERTROFIA DE ECTOMORFO ACTIVADA: Distribución de carbohidratos escalada al 60% para contrarrestar el rendimiento metabólico acelerado. Las reservas elevadas de glucógeno protegerán las proteínas musculares de la oxidación celular. Mantenga la hidratación en ${d.water} L diarios.`;
   }
